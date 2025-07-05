@@ -89,14 +89,17 @@ CREATE INDEX idx_rental_inventory ON rental(inventory_id);
 EXPLAIN ANALYZE
 SELECT 
     CONCAT(c.last_name, ' ', c.first_name) AS customer_name,
-    SUM(p.amount) AS total_amount
+    f.title AS film_title,
+    SUM(p.amount) AS total_amount_per_film
 FROM payment p
 JOIN rental r ON r.rental_id = p.rental_id
 JOIN customer c ON c.customer_id = p.customer_id
+JOIN inventory i ON i.inventory_id = r.inventory_id
+JOIN film f ON f.film_id = i.film_id
 WHERE p.payment_date >= '2005-07-30' 
   AND p.payment_date < '2005-07-31'
-GROUP BY c.customer_id;
+GROUP BY c.customer_id, f.film_id;
 ```
 
-![Задание2Скриншот2](https://github.com/Easyjetz/12-05.md/blob/main/%D0%97%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B52%D0%A1%D0%BA%D1%80%D0%B8%D0%BD%D1%88%D0%BE%D1%822.png)
+![Задание2Скриншот2](https://github.com/Easyjetz/12-05.md/blob/main/%D0%97%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B52%D0%A1%D0%BA%D1%80%D0%B8%D0%BD%D1%88%D0%BE%D1%822.1.png)
 
